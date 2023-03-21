@@ -24,7 +24,6 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/fields')->group(function () {
         Route::get('/', [FieldController::class, 'getFields']);
     });
-    Route::get('/', [FieldController::class, 'getFields']);
 
     //private
     Route::middleware('auth:sanctum')->group(function () {

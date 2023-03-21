@@ -55,7 +55,7 @@ class AuthController extends Controller
                 if (Gate::check("isAdmin", $user)) {
                     $token = $user->createToken('token_of_' . $user['username'], ['admin'])->plainTextToken;
                 } else {
-                    $token = $user->createToken('token_of_' . $user['username'])->plainTextToken;
+                    $token = $user->createToken('token_of_' . $user['username'], ["user"])->plainTextToken;
                 }
                 return $this->success("login is success", [
                     "username" => $user['username'],
