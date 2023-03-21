@@ -20,14 +20,18 @@ Route::prefix('/v1')->group(function () {
     //public
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/user/send-reset-password', [AuthController::class, 'sendResetPassword']);
 
     Route::prefix('/fields')->group(function () {
         Route::get('/', [FieldController::class, 'getFields']);
     });
+    Route::get('/', [FieldController::class, 'getFields']);
 
     //private
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, "logout"]);
+
+        Route::prefix('/fields')->group(function () {
+            Route::post('/', [FieldController::class, 'store'])->middleware('ability:admin');
+        });
     });
 });

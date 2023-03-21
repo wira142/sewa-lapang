@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -51,7 +52,11 @@ class AuthController extends Controller
             if (is_null($user)) {
                 return $this->error("Invalid login or password!", 401);
             } else {
-                $token = $user->createToken('token_of_' . $user['username'])->plainTextToken;
+                if (Gate::check("isAdmin", $user)) {
+                    $token = $user->createToken('token_of_' . $user['username'], ['admin'])->plainTextToken;
+                } else {
+                    $token = $user->createToken('token_of_' . $user['username'])->plainTextToken;
+                }
                 return $this->success("login is success", [
                     "username" => $user['username'],
                     "token" => $token
