@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\FieldType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,12 +20,13 @@ class FieldFactory extends Factory
         return [
             'title' => fake()->unique()->company(),
             'image' => fake()->unique()->imageUrl(),
-            'desc' => fake()->sentence(30),
+            'desc' => fake()->sentence(20),
             'disc' => fake()->numberBetween(0.1, 1),
             'min_time' => fake()->numberBetween(1, 4),
             'status' => fake()->numberBetween(0, 1),
             'price' => fake()->numberBetween(100000, 1500000),
             'map_link' => fake()->url(),
+            'type_id' => FieldType::factory(),
         ];
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fields', function (Blueprint $table) {
-            $table->id();
+            $table->id("field_id");
             $table->text("title");
             $table->text('image');
             $table->string('desc');
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean("status");
             $table->integer("price");
             $table->string('map_link');
+            $table->foreignId("type_id")->references("type_id")->on("field_types");
             $table->timestamps();
         });
     }

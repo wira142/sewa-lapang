@@ -23,4 +23,8 @@ class Field extends Model
     {
         return Field::get();
     }
+    public function create($request)
+    {
+        return "input field";
+    }
 }

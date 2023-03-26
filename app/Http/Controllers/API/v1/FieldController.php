@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FieldRequest;
 use App\Models\Field;
 use App\Traits\HttpResponses;
 use BadMethodCallException;
@@ -17,6 +18,10 @@ class FieldController extends Controller
     {
         $this->fieldsModel = $Fields;
     }
+    public function handleMethod(callable $callback)
+    {
+        $callback();
+    }
     public function getFields()
     {
         try {
@@ -26,6 +31,20 @@ class FieldController extends Controller
             } else {
                 return $this->error("get fields failed!");
             }
+        } catch (ModelNotFoundException $th) {
+            return $this->error("Model error: " . $this->customMessage($th, "some part is not found!"));
+        } catch (BadMethodCallException $th) {
+            return $this->error("Method error: " . $this->customMessage($th, "unavailable action!"));
+        } catch (QueryException $th) {
+            return $this->error("Query error: " . $this->customMessage($th, "something wrong with syntax!"));
+        } catch (\Exception $th) {
+            return $this->error("General error: " . $this->customMessage($th, "Something wrong in system!"));
+        }
+    }
+    public function store(FieldRequest $request)
+    {
+        try {
+            return $request;
         } catch (ModelNotFoundException $th) {
             return $this->error("Model error: " . $this->customMessage($th, "some part is not found!"));
         } catch (BadMethodCallException $th) {
