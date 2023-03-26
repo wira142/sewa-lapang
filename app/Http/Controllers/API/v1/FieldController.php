@@ -16,16 +16,12 @@ class FieldController extends Controller
     use HttpResponses;
     public function __construct(Field $Fields)
     {
-        $this->fieldsModel = $Fields;
-    }
-    public function handleMethod(callable $callback)
-    {
-        $callback();
+        $this->fieldModel = $Fields;
     }
     public function getFields()
     {
         try {
-            $fields = $this->fieldsModel->getFields();
+            $fields = $this->fieldModel->getFields();
             if ($fields != null) {
                 return $this->success("get fields success", $fields);
             } else {
@@ -44,7 +40,12 @@ class FieldController extends Controller
     public function store(FieldRequest $request)
     {
         try {
-            return $request;
+            $validated = $request->validated();
+            $validated["image"] = $request->file('image')->hashName();
+            $created = $this->fieldModel->addField($validated);
+            if ($created) {
+                return $this->success("field insertion success", []);
+            }
         } catch (ModelNotFoundException $th) {
             return $this->error("Model error: " . $this->customMessage($th, "some part is not found!"));
         } catch (BadMethodCallException $th) {

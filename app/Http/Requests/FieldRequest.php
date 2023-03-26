@@ -23,13 +23,21 @@ class FieldRequest extends FormRequest
     {
         return [
             "title" => "required|min:4",
-            "image" => ["image", "mimes:png,jpg", "max:2048"],
+            "image" => ["file", "image", "mimes:png,jpg", "max:2048"],
             "desc" => "required|min:50",
             "disc" => "required|min:0",
             "min_time" => "required|min:0",
             "status" => "required|min:0",
             "price" => "required|min:0",
             "map_link" => "required|url",
+            "type_id" => "required|numeric",
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            "image.mimes" => "unsupported file type",
+            "image.max" => "file size exceeds the limit",
         ];
     }
 }

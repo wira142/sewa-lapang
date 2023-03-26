@@ -17,14 +17,15 @@ class Field extends Model
         'status',
         'price',
         'map_link',
+        'type_id',
     ];
 
     public function getFields()
     {
         return Field::get();
     }
-    public function create($request)
+    public function addField($request)
     {
-        return "input field";
+        return Field::create($request);
     }
 }
